@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1F2933">
+<title>J&amp;Y 현장관리 · 건축주 페이지 (데모)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--ink:#1F2933;--sub:#5B6670;--line:#E4E1DA;--bg:#F5F3EE;--card:#fff;--acc:#F26B1D;--accl:#FFE7D6;--ok:#1E8E5A;--okl:#E3F4EB;--red:#C8372D;--redl:#FBE4E2;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:var(--bg);color:var(--ink);font-size:14px}
+button{font-family:inherit;cursor:pointer}
+.topbar{background:var(--ink);color:#fff;padding:10px 24px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:5}
+.topbar .logo{font-weight:800;font-size:15px}
+.topbar .logo span{color:var(--acc)}
+.topbar .demo{font-size:11px;background:#ffffff22;padding:3px 8px;border-radius:99px}
+.topbar .sp{flex:1}
+.topbar label{font-size:12px;color:#C9CED3}
+.topbar select{font-family:inherit;font-size:14px;padding:6px 10px;border-radius:8px;border:none;font-weight:600}
+.topbar .reset{background:none;border:1px solid #ffffff44;color:#C9CED3;font-size:12px;padding:5px 10px;border-radius:8px}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 24px 90px}
+h1{font-size:26px;font-weight:800}
+.hsub{color:var(--sub);margin-top:4px;font-size:14px}
+.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px;gap:16px}
+.live{font-size:12px;color:var(--sub);text-align:right}
+.live b{color:var(--ok)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:6px;box-shadow:0 0 0 4px #1E8E5A22}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.card h2{font-size:14px;font-weight:700;color:var(--sub);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.card h2 small{font-weight:500;font-size:12px}
+.c12{grid-column:span 12}.c8{grid-column:span 8}.c7{grid-column:span 7}.c6{grid-column:span 6}.c5{grid-column:span 5}.c4{grid-column:span 4}
+.kpis{grid-column:span 12;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.kpi .l{font-size:12px;color:var(--sub);font-weight:600}
+.kpi .v{font-size:28px;font-weight:800;margin-top:4px}
+.kpi .v.acc{color:var(--acc)}
+.kpi .s{font-size:12px;color:var(--sub);margin-top:3px}
+.bar{height:8px;background:#EEE;border-radius:99px;margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);border-radius:99px;transition:width .6s}
+.steps{display:flex;margin:4px 0 2px}
+.step{flex:1;text-align:center;position:relative;font-size:13px;font-weight:600}
+.step:before{content:"";position:absolute;top:13px;left:-50%;width:100%;height:3px;background:var(--line)}
+.step:first-child:before{display:none}
+.step.done:before,.step.now:before{background:var(--acc)}
+.step .b{width:28px;height:28px;border-radius:50%;margin:0 auto 6px;background:#fff;border:3px solid var(--line);position:relative;z-index:1;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff}
+.step.done .b{background:var(--acc);border-color:var(--acc)}
+.step.now .b{border-color:var(--acc)}
+.step.now .b:after{content:"";width:10px;height:10px;border-radius:50%;background:var(--acc)}
+.step .d{display:block;font-size:11px;color:var(--sub);font-weight:500}
+.feed{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;align-items:start}
+.post{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.post .img{height:120px;background:linear-gradient(135deg,#C9C4BA,#9C978E);background-size:cover;background-position:center;position:relative}
+.post .img em{position:absolute;right:8px;top:8px;font-style:normal;font-size:11px;background:#0006;color:#fff;padding:2px 8px;border-radius:99px}
+.post .tx{padding:9px 11px;font-size:13px;line-height:1.45}
+.post .mt{font-size:11px;color:var(--sub);margin-top:3px}
+.post.new{outline:3px solid var(--acc)}
+.post .img.ph2{background:linear-gradient(135deg,#B9C2C8,#7F8B93)}
+.post .img.ph3{background:linear-gradient(135deg,#D8CDBB,#A89A82)}
+.post .img.noimg{height:34px;background:#F1EEE8}
+.post .img.noimg em{background:var(--accl);color:#B4470C;top:7px}
+.post .img.noimg:before{content:'업데이트';position:absolute;left:11px;top:9px;font-size:11px;font-weight:700;color:var(--sub)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+td,th{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left}
+th{font-size:12px;color:var(--sub);font-weight:600}
+td.r{text-align:right}
+.tag{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.t-ok{background:var(--okl);color:var(--ok)}
+.t-now{background:var(--accl);color:#B4470C}
+.t-wait{background:#EEF0F2;color:var(--sub)}
+.t-red{background:var(--redl);color:var(--red)}
+.t-in{background:#E7ECF7;color:#2F4B8A}
+.list{list-style:none}
+.list li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.list li:last-child{border:none}
+.list .sub{font-size:12px;color:var(--sub);display:block;margin-top:2px}
+.sites{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;grid-column:span 12}
+.site{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;cursor:pointer}
+.site:hover{border-color:var(--acc)}
+.site .n{font-weight:800;font-size:16px}
+.site .o{font-size:12px;color:var(--sub);margin-top:2px}
+.site .row{display:flex;justify-content:space-between;font-size:12px;color:var(--sub);margin-top:8px}
+.site .row b{color:var(--ink)}
+.btn{border:none;background:var(--acc);color:#fff;font-weight:700;font-size:14px;padding:10px 16px;border-radius:10px}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{font-size:12px;padding:6px 10px;border-radius:8px}
+.btn.dark{background:var(--ink)}
+.fab{position:fixed;right:28px;bottom:26px;display:flex;gap:10px;z-index:6}
+.fab .btn{box-shadow:0 6px 20px #0002;font-size:15px;padding:13px 20px;border-radius:99px}
+.empty{color:var(--sub);font-size:13px;padding:10px 0}
+.modal-bg{position:fixed;inset:0;background:#0007;display:none;align-items:center;justify-content:center;z-index:10}
+.modal-bg.on{display:flex}
+.modal{background:#fff;border-radius:18px;width:560px;max-width:92vw;max-height:90vh;overflow:auto;padding:22px}
+.modal h3{font-size:18px;margin-bottom:14px}
+.f{margin-bottom:12px}
+.f>label{display:block;font-size:12px;font-weight:700;color:var(--sub);margin-bottom:6px}
+.f input[type=text],.f input[type=date],.f input[type=number],.f textarea,.f select{width:100%;font-family:inherit;font-size:14px;padding:9px 11px;border:1px solid var(--line);border-radius:10px}
+.f textarea{min-height:70px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--sub)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.mact{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:99px;font-size:14px;opacity:0;transition:.3s;z-index:20}
+.toast.on{opacity:1}
+.who{font-size:12px;color:var(--sub);margin-bottom:6px;font-weight:600}
+.notice{background:var(--accl);color:#8A3A0E;border-radius:12px;padding:10px 14px;font-size:13px;margin-bottom:14px}
+
+.f input[type=file]{font-family:inherit;font-size:13px;color:var(--sub);width:100%}
+.f input[type=file]::file-selector-button{font-family:inherit;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:9px 14px;font-weight:700;font-size:14px;margin-right:10px;cursor:pointer}
+/* ---------- 모바일 ---------- */
+.feed::-webkit-scrollbar{display:none}
+@media (max-width:760px){
+  body{font-size:15px;-webkit-text-size-adjust:100%}
+  .topbar{flex-wrap:wrap;gap:8px 10px;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top))}
+  .topbar .sp{display:none}
+  .topbar .demo{margin-right:auto}
+  .topbar label{display:none}
+  .topbar select{order:5;flex:1 1 100%;font-size:16px;padding:9px 10px}
+  .topbar .reset{order:3;padding:4px 9px}
+  .wrap{padding:16px 14px calc(110px + env(safe-area-inset-bottom))}
+  .head{flex-direction:column;align-items:flex-start;gap:8px;margin-bottom:14px}
+  .live{text-align:left}
+  .live br{display:none}
+  h1{font-size:21px;line-height:1.3}
+  .hsub{font-size:13px}
+  .grid{grid-template-columns:1fr;gap:12px}
+  .c12,.c8,.c7,.c6,.c5,.c4,.kpis,.sites{grid-column:1/-1}
+  .card{padding:16px 14px;border-radius:14px}
+  .card h2{flex-wrap:wrap;gap:6px}
+  .card h2 small{flex-basis:100%;order:3}
+  .kpis{grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{padding:13px 14px;border-radius:14px}
+  .kpi .v{font-size:23px}
+  .kpi .v[style]{font-size:17px!important;padding-top:4px!important}
+  .sites{grid-template-columns:1fr;gap:10px}
+  .site{padding:14px}
+  .steps{margin:0 -4px}
+  .step{font-size:11px;letter-spacing:-.02em}
+  .step .d{font-size:10px}
+  .step .b{width:24px;height:24px}
+  .step:before{top:11px}
+  .feed{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;margin:12px -14px 0;padding:0 14px 4px;scrollbar-width:none;align-items:flex-start}
+  .post{flex:0 0 78%;scroll-snap-align:start}
+  .post .img{height:170px}
+  .post .img.noimg{height:34px}
+  table{font-size:13px}
+  td,th{padding:9px 4px}
+  .list li{align-items:flex-start}
+  .list li .btn,.list li .tag{flex-shrink:0;margin-top:2px}
+  .fab{left:0;right:0;bottom:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(#F5F3EE00,#F5F3EE 35%);gap:8px}
+  .fab .btn{flex:1;font-size:15px;padding:14px 10px}
+  .modal-bg{align-items:flex-end}
+  .modal{width:100%;max-width:100%;border-radius:20px 20px 0 0;max-height:90vh;padding:20px 16px calc(18px + env(safe-area-inset-bottom))}
+  .f input[type=text],.f input[type=date],.f input[type=number],.f textarea,.f select{font-size:16px}
+  .chip{font-size:14px;padding:8px 13px}
+  .mact .btn{flex:1;padding:13px}
+  .toast{bottom:calc(90px + env(safe-area-inset-bottom));max-width:90vw;text-align:center;font-size:13px;border-radius:14px}
+  .notice{font-size:13px}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="logo">J&amp;Y <span>현장관리</span></div>
+  <div class="demo">데모 · 가상 데이터</div>
+  <div class="sp"></div>
+  <label for="who">로그인 계정 바꿔보기</label>
+  <select id="who"></select>
+  <button class="reset" onclick="resetDemo()">데모 초기화</button>
+</div>
+<div class="wrap" id="app"></div>
+<div class="fab" id="fab"></div>
+
+<div class="modal-bg" id="mbg"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY='jy_site_demo_v1';
+const USERS=[
+  {id:'ceo',name:'배대표',role:'ceo',label:'대표 배OO (전체 현장)'},
+  {id:'lee',name:'이소장',role:'mgr',sites:['A','C'],label:'현장소장 이OO (A·C현장)'},
+  {id:'jung',name:'정소장',role:'mgr',sites:['B'],label:'현장소장 정OO (B현장)'},
+  {id:'kim',name:'김OO',role:'owner',site:'A',label:'건축주 김OO (A현장)'},
+  {id:'park',name:'박OO',role:'owner',site:'B',label:'건축주 박OO (B현장)'},
+  {id:'choi',name:'최OO',role:'owner',site:'C',label:'건축주 최OO (C현장)'}
+];
+const STAGES=['착공·가설','기초','골조','외장·설비','내장·준공'];
+const PERMITS=['건축허가','착공신고','공정 감리','사용승인','건축물대장 등재'];
+function seed(){return{
+  sites:{
+    A:{id:'A',name:'OO동 근린생활시설 신축',spec:'지상 5층 · 연면적 980㎡',owner:'kim',mgr:'lee',progress:62,plan:60,stage:2,stageNote:'진행 중 (4층)',due:'2027-01-30',
+       pays:[{n:'계약금',w:'계약 시',p:10,s:'ok'},{n:'1차 중도금',w:'기초 완료',p:30,s:'ok'},{n:'2차 중도금',w:'골조 완료 (11.15)',p:30,s:'due'},{n:'잔금',w:'사용승인 후',p:30,s:'wait'}],
+       permits:['ok','ok','now','wait','wait']},
+    B:{id:'B',name:'OO리 전원주택 신축',spec:'지상 2층 · 연면적 210㎡',owner:'park',mgr:'jung',progress:35,plan:40,stage:1,stageNote:'기초 양생 중',due:'2027-03-20',
+       pays:[{n:'계약금',w:'계약 시',p:10,s:'ok'},{n:'1차 중도금',w:'기초 완료 (11.05)',p:30,s:'due'},{n:'2차 중도금',w:'골조 완료',p:30,s:'wait'},{n:'잔금',w:'사용승인 후',p:30,s:'wait'}],
+       permits:['ok','ok','wait','wait','wait']},
+    C:{id:'C',name:'OO동 상가 리모델링',spec:'1~2층 · 전용 320㎡',owner:'choi',mgr:'lee',progress:88,plan:85,stage:4,stageNote:'마감 공사',due:'2026-11-20',
+       pays:[{n:'계약금',w:'계약 시',p:20,s:'ok'},{n:'중도금',w:'철거·설비 완료',p:40,s:'ok'},{n:'잔금',w:'준공 후',p:40,s:'wait'}],
+       permits:['ok','ok','ok','now','wait']}
+  },
+  posts:[
+    {id:3,site:'A',by:'lee',d:'10.26',t:'4층 슬래브 철근 배근 작업 중입니다.',pub:true,ph:1},
+    {id:2,site:'A',by:'lee',d:'10.24',t:'3층 콘크리트 타설 완료. 양생 중입니다.',pub:true,ph:2},
+    {id:1,site:'A',by:'lee',d:'10.22',t:'감리자 배근 검측 통과했습니다.',pub:true,ph:3},
+    {id:4,site:'B',by:'jung',d:'10.25',t:'기초 매트 타설 완료, 7일 양생 예정입니다.',pub:true,ph:2},
+    {id:5,site:'C',by:'lee',d:'10.25',t:'1층 바닥 타일 시공 완료.',pub:true,ph:3},
+    {id:6,site:'A',by:'lee',d:'10.26',t:'철근 단가 인상 통보 받음. 대표님 확인 필요',pub:false}
+  ],
+  tasks:[
+    {id:1,site:'A',to:'lee',from:'ceo',d:'10.25',due:'2026-10-28',t:'비 예보로 4층 타설 일정 바뀌면 건축주 공지 올려주세요',pri:'normal',st:'open'},
+    {id:2,site:'B',to:'jung',from:'ceo',d:'10.24',due:'2026-10-30',t:'기초 완료 기성 서류 준비, 1차 중도금 안내',pri:'normal',st:'open'},
+    {id:3,site:'C',to:'lee',from:'ceo',d:'10.20',due:'2026-10-23',t:'타일 샘플 건축주 확인 받기',pri:'normal',st:'done',doneNote:'B안으로 확정'}
+  ],
+  reqs:[
+    {id:1,site:'A',by:'kim',d:'10.21',t:'2층 화장실 타일 색상 변경 가능할까요?',st:'done',reply:'샘플 B안으로 반영했습니다.'}
+  ],
+  seq:100
+};}
+let S=JSON.parse(localStorage.getItem(KEY)||'null')||seed();
+let me=localStorage.getItem(KEY+'_me')||'ceo';
+let lastNew=null, ceoSite=null;
+const save=()=>localStorage.setItem(KEY,JSON.stringify(S));
+const U=id=>USERS.find(u=>u.id===id);
+const $=s=>document.querySelector(s);
+const today=()=>{const d=new Date();return (d.getMonth()+1)+'.'+String(d.getDate()).padStart(2,'0')};
+const nowT=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2200)}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function resetDemo(){if(confirm('데모 데이터를 처음 상태로 되돌릴까요?')){S=seed();save();lastNew=null;render();toast('초기화했어요')}}
+
+const sel=$('#who');
+USERS.forEach(u=>{const o=document.createElement('option');o.value=u.id;o.textContent=u.label;sel.appendChild(o)});
+sel.value=me;
+sel.onchange=()=>{me=sel.value;localStorage.setItem(KEY+'_me',me);ceoSite=null;render();window.scrollTo(0,0)};
+window.addEventListener('storage',e=>{if(e.key===KEY){S=JSON.parse(e.newValue);render()}});
+
+function mySites(){const u=U(me);if(u.role==='ceo')return Object.keys(S.sites);if(u.role==='mgr')return u.sites;return [u.site]}
+function payTag(s){return s==='ok'?'<span class="tag t-ok">입금 확인</span>':s==='due'?'<span class="tag t-now">입금 예정</span>':'<span class="tag t-wait">예정</span>'}
+function permTag(s){return s==='ok'?'<span class="tag t-ok">완료</span>':s==='now'?'<span class="tag t-now">진행 중</span>':'<span class="tag t-wait">대기</span>'}
+function stepsHtml(st){return '<div class="steps">'+STAGES.map((n,i)=>`<div class="step ${i<st.stage?'done':i===st.stage?'now':''}"><div class="b">${i<st.stage?'✓':''}</div>${n}<span class="d">${i===st.stage?esc(st.stageNote):i<st.stage?'완료':'예정'}</span></div>`).join('')+'</div>'}
+function postCard(p,showPub){const img=p.img?`style="background-image:url(${p.img})"`:'';const cls=p.img?'':p.ph?' ph'+p.ph:' noimg';
+  return `<div class="post ${p.id===lastNew?'new':''}"><div class="img${cls}" ${img}><em>${p.d===today()?'오늘':p.d}</em></div><div class="tx">${esc(p.t)}<div class="mt">${U(p.by).name}${showPub?' · '+(p.pub?'<b style="color:var(--ok)">건축주 공개</b>':'<b style="color:var(--red)">내부만</b>'):''}</div></div></div>`}
+function nextPay(st){const p=st.pays.find(x=>x.s!=='ok');return p?p:{n:'완료',w:'-'}}
+
+function siteDetail(sid,mode){ // mode: owner | staff
+  const st=S.sites[sid];const owner=mode==='owner';
+  const posts=S.posts.filter(p=>p.site===sid&&(owner?p.pub:true)).sort((a,b)=>b.id-a.id).slice(0,owner?6:9);
+  const permDone=st.permits.filter(x=>x==='ok').length;
+  const dday=Math.ceil((new Date(st.due)-new Date())/864e5);
+  const np=nextPay(st);
+  const reqs=S.reqs.filter(r=>r.site===sid).sort((a,b)=>b.id-a.id);
+  return `
+  <div class="kpis">
+    <div class="kpi"><div class="l">전체 공정률</div><div class="v acc">${st.progress}%</div><div class="bar"><i style="width:${st.progress}%"></i></div><div class="s">계획 ${st.plan}% 대비 ${st.progress-st.plan>=0?'+':''}${st.progress-st.plan}%p</div></div>
+    <div class="kpi"><div class="l">준공 예정</div><div class="v">D-${dday}</div><div class="s">${st.due.replace(/-/g,'.')} 예정</div></div>
+    <div class="kpi"><div class="l">다음 입금</div><div class="v" style="font-size:22px;padding-top:6px">${np.n}</div><div class="s">${esc(np.w)}</div></div>
+    <div class="kpi"><div class="l">인허가</div><div class="v">${permDone} / ${PERMITS.length}</div><div class="s">다음: ${PERMITS[st.permits.findIndex(x=>x!=='ok')]||'완료'}</div></div>
+  </div>
+  <div class="card c12"><h2>시공 현황 <small>${owner?'현장 담당자가 올린 소식이 바로 보입니다':'건축주에게는 "건축주 공개" 글만 보입니다'}</small></h2>${stepsHtml(st)}
+    <div class="feed">${posts.map(p=>postCard(p,!owner)).join('')||'<div class="empty">아직 소식이 없습니다</div>'}</div></div>
+  <div class="card c6"><h2>입금 일정 <small>계약금액 기준</small></h2><table><tr><th>구분</th><th>시기</th><th class="r">비율</th><th>상태</th></tr>
+    ${st.pays.map(p=>`<tr><td>${p.n}</td><td>${esc(p.w)}</td><td class="r">${p.p}%</td><td>${payTag(p.s)}</td></tr>`).join('')}</table></div>
+  <div class="card c6"><h2>인허가 현황 <small>세움터 기준</small></h2><ul class="list">
+    ${PERMITS.map((n,i)=>`<li><div>${n}</div>${permTag(st.permits[i])}</li>`).join('')}</ul></div>
+  <div class="card c12"><h2>요청·문의 <small>${owner?'궁금한 점을 남기면 담당자에게 바로 전달됩니다':'건축주가 남긴 요청'}</small>${owner?'<button class="btn sm" onclick="openReq()">요청 남기기</button>':''}</h2>
+    <ul class="list">${reqs.map(r=>`<li><div>${esc(r.t)}<span class="sub">${r.d} · ${U(r.by).name}${r.reply?' → 답변: '+esc(r.reply):''}</span></div>${r.st==='done'?'<span class="tag t-ok">답변 완료</span>':(owner?'<span class="tag t-now">확인 중</span>':`<button class="btn sm" onclick="openReply(${r.id})">답변</button>`)}</li>`).join('')||'<div class="empty">요청 없음</div>'}</ul></div>`;
+}
+
+function taskRows(list,canDo){
+  if(!list.length)return '<div class="empty">지시 없음</div>';
+  return '<ul class="list">'+list.map(t=>`<li><div>${t.pri==='urgent'?'<span class="tag t-red">긴급</span> ':''}<b>[${t.site}현장]</b> ${esc(t.t)}<span class="sub">${U(t.from).name} → ${U(t.to).name} · 지시 ${t.d} · 기한 ${t.due.slice(5).replace('-','.')}${t.doneNote?' · 완료 메모: '+esc(t.doneNote):''}</span></div>${t.st==='done'?'<span class="tag t-ok">완료</span>':(canDo?`<button class="btn sm" onclick="openDone(${t.id})">완료 보고</button>`:'<span class="tag t-in">진행 중</span>')}</li>`).join('')+'</ul>';
+}
+
+function render(){
+  const u=U(me);const app=$('#app');const fab=$('#fab');
+  if(u.role==='owner'){
+    const st=S.sites[u.site];
+    app.innerHTML=`<div class="head"><div><div class="who">J&Y종합건설 · 건축주 전용 페이지</div><h1>${st.name}</h1><div class="hsub">${u.name} 건축주님 · ${st.spec}</div></div><div class="live"><span class="dot"></span><b>실시간 반영</b> <br>확인 시각 ${nowT()}</div></div><div class="grid">${siteDetail(u.site,'owner')}</div>`;
+    fab.innerHTML='';return;
+  }
+  if(u.role==='ceo'){
+    const ids=Object.keys(S.sites);
+    const open=S.tasks.filter(t=>t.st==='open').sort((a,b)=>b.id-a.id);
+    const done=S.tasks.filter(t=>t.st==='done').sort((a,b)=>b.id-a.id).slice(0,4);
+    const newReq=S.reqs.filter(r=>r.st!=='done');
+    const internal=S.posts.filter(p=>!p.pub).sort((a,b)=>b.id-a.id).slice(0,3);
+    app.innerHTML=`<div class="head"><div><div class="who">대표 화면 · 전체 현장</div><h1>오늘의 현장 현황</h1><div class="hsub">현장 ${ids.length}곳 · 미완료 지시 ${open.length}건 · 건축주 요청 ${newReq.length}건</div></div></div>
+    <div class="grid">
+      <div class="sites">${ids.map(id=>{const st=S.sites[id];const n=open.filter(t=>t.site===id).length;return `<div class="site" onclick="ceoSite='${id}';render();window.scrollTo(0,document.body.scrollHeight)"><div class="n">${id}현장 · ${st.name}</div><div class="o">건축주 ${U(st.owner).name} · 소장 ${U(st.mgr).name}</div><div class="bar"><i style="width:${st.progress}%"></i></div><div class="row"><span>공정률 <b>${st.progress}%</b></span><span>다음 입금 <b>${nextPay(st).n}</b></span><span>지시 <b>${n}건</b></span></div></div>`}).join('')}</div>
+      <div class="card c7"><h2>내가 내린 지시 <small>현장소장 완료 보고가 실시간으로 올라옵니다</small></h2>${taskRows(open,false)}<div style="height:10px"></div><h2>최근 완료</h2>${taskRows(done,false)}</div>
+      <div class="card c5"><h2>확인할 것 <small>내부 전용</small></h2>
+        <div class="who">건축주 요청</div><ul class="list">${newReq.map(r=>`<li><div>[${r.site}] ${esc(r.t)}<span class="sub">${r.d} · ${U(r.by).name}</span></div><button class="btn sm" onclick="openReply(${r.id})">답변</button></li>`).join('')||'<div class="empty">새 요청 없음</div>'}</ul>
+        <div class="who" style="margin-top:12px">현장 내부 보고</div><ul class="list">${internal.map(p=>`<li><div>[${p.site}] ${esc(p.t)}<span class="sub">${p.d} · ${U(p.by).name}</span></div><span class="tag t-red">내부만</span></li>`).join('')||'<div class="empty">없음</div>'}</ul></div>
+      ${ceoSite?`<div class="card c12" style="border-color:var(--acc)"><h2>${ceoSite}현장 상세 (건축주 ${U(S.sites[ceoSite].owner).name}님 화면과 같은 데이터) <button class="btn sm ghost" onclick="ceoSite=null;render()">닫기</button></h2></div>${siteDetail(ceoSite,'staff')}`:''}
+    </div>`;
+    fab.innerHTML='<button class="btn dark" onclick="openTask()">+ 지시 내리기</button><button class="btn" onclick="openPost()">+ 빠른 등록</button>';
+    return;
+  }
+  // 현장소장
+  const mine=S.tasks.filter(t=>t.to===me).sort((a,b)=>(a.st===b.st?b.id-a.id:a.st==='open'?-1:1));
+  const openN=mine.filter(t=>t.st==='open').length;
+  app.innerHTML=`<div class="head"><div><div class="who">현장소장 화면</div><h1>${u.name}님, 오늘 할 일 ${openN}건</h1><div class="hsub">담당 현장: ${u.sites.map(s=>s+'현장 '+S.sites[s].name).join(' / ')}</div></div></div>
+  ${openN?'<div class="notice">대표님 지시가 있습니다. 처리 후 "완료 보고"를 누르면 대표 화면에 바로 올라갑니다.</div>':''}
+  <div class="grid"><div class="card c12"><h2>대표 지시 <small>내 담당만 보입니다</small></h2>${taskRows(mine,true)}</div>
+  ${u.sites.map(s=>`<div class="card c12" style="background:var(--ink);color:#fff;padding:12px 18px;border:none"><b>${s}현장 · ${S.sites[s].name}</b> <span style="color:#C9CED3;font-size:12px">· 건축주 ${U(S.sites[s].owner).name}</span></div>${siteDetail(s,'staff')}`).join('')}</div>`;
+  fab.innerHTML='<button class="btn" onclick="openPost()">+ 빠른 등록 (사진·소식)</button>';
+}
+
+// ---------- modals ----------
+const mbg=$('#mbg'),modal=$('#modal');
+function closeM(){mbg.classList.remove('on')}
+mbg.onclick=e=>{if(e.target===mbg)closeM()};
+function chips(name,opts,val){return `<div class="chips" data-name="${name}">${opts.map(o=>`<button type="button" class="chip ${o.v===val?'on':''}" data-v="${o.v}">${o.l}</button>`).join('')}</div>`}
+function bindChips(cb){modal.querySelectorAll('.chips').forEach(g=>g.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{g.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');cb&&cb(g.dataset.name,c.dataset.v)}))}
+const cv=n=>{const c=modal.querySelector(`.chips[data-name="${n}"] .chip.on`);return c?c.dataset.v:null};
+
+function openPost(){
+  const sites=mySites();
+  modal.innerHTML=`<h3>빠른 등록</h3>
+  <div class="f"><label>현장</label>${chips('site',sites.map(s=>({v:s,l:s+'현장 · '+S.sites[s].name})),sites[0])}</div>
+  <div class="f"><label>종류</label>${chips('kind',[{v:'post',l:'현장 소식·사진'},{v:'prog',l:'공정률 변경'},{v:'pay',l:'입금 확인'},{v:'perm',l:'인허가 단계'}],'post')}</div>
+  <div id="kindBox"></div>
+  <div class="f"><label>공개 범위</label>${chips('pub',[{v:'1',l:'건축주 공개'},{v:'0',l:'내부만 (대표·직원)'}],'1')}</div>
+  <div class="mact"><button class="btn ghost" onclick="closeM()">취소</button><button class="btn" onclick="submitPost()">등록</button></div>`;
+  bindChips((n)=>{if(n==='kind'||n==='site')kindBox()});kindBox();mbg.classList.add('on');
+}
+function kindBox(){
+  const k=cv('kind'),sid=cv('site'),st=S.sites[sid];const b=$('#kindBox');
+  if(k==='post')b.innerHTML=`<div class="f"><label>내용</label><textarea id="pT" placeholder="예) 4층 거푸집 설치 완료했습니다"></textarea></div><div class="f"><label>사진 (촬영 또는 앨범, 선택)</label><input type="file" id="pI" accept="image/*"></div>`;
+  if(k==='prog')b.innerHTML=`<div class="f"><label>공정률 (%) · 현재 ${st.progress}%</label><input type="number" id="pP" value="${Math.min(100,st.progress+3)}" min="0" max="100"></div><div class="f"><label>공정 단계</label><select id="pS">${STAGES.map((n,i)=>`<option value="${i}" ${i===st.stage?'selected':''}>${n}</option>`).join('')}</select></div><div class="f"><label>단계 메모</label><input type="text" id="pN" value="${esc(st.stageNote)}"></div>`;
+  if(k==='pay')b.innerHTML=`<div class="f"><label>입금 항목</label><select id="pY">${st.pays.map((p,i)=>`<option value="${i}" ${p.s!=='ok'?'':'disabled'}>${p.n} (${p.p}%)${p.s==='ok'?' · 이미 확인':''}</option>`).join('')}</select></div>`;
+  if(k==='perm')b.innerHTML=`<div class="f"><label>인허가 항목</label><select id="pM">${PERMITS.map((n,i)=>`<option value="${i}">${n} (지금: ${st.permits[i]==='ok'?'완료':st.permits[i]==='now'?'진행 중':'대기'})</option>`).join('')}</select></div><div class="f"><label>상태</label>${chips('pst',[{v:'now',l:'진행 중'},{v:'ok',l:'완료'}],'ok')}</div>`;
+  bindChips((n)=>{if(n==='kind'||n==='site')kindBox()});
+}
+function resizeImg(file){return new Promise(r=>{const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');const sc=Math.min(1,640/im.width);c.width=im.width*sc;c.height=im.height*sc;c.getContext('2d').drawImage(im,0,0,c.width,c.height);r(c.toDataURL('image/jpeg',.7))};im.src=fr.result};fr.readAsDataURL(file)})}
+async function submitPost(){
+  const sid=cv('site'),k=cv('kind'),pub=cv('pub')==='1',st=S.sites[sid];let t='';
+  if(k==='post'){t=$('#pT').value.trim();if(!t){toast('내용을 적어주세요');return}
+    const f=$('#pI').files[0];const img=f?await resizeImg(f):null;
+    const id=++S.seq;S.posts.push({id,site:sid,by:me,d:today(),t,pub,img});lastNew=id;}
+  if(k==='prog'){st.progress=+$('#pP').value;st.stage=+$('#pS').value;st.stageNote=$('#pN').value;t=`공정률 ${st.progress}%로 업데이트 (${STAGES[st.stage]})`;const id=++S.seq;S.posts.push({id,site:sid,by:me,d:today(),t,pub});lastNew=id;}
+  if(k==='pay'){const i=+$('#pY').value;st.pays[i].s='ok';const nx=st.pays.find(p=>p.s==='wait');if(nx)nx.s='due';t=`${st.pays[i].n} 입금 확인했습니다. 감사합니다.`;const id=++S.seq;S.posts.push({id,site:sid,by:me,d:today(),t,pub});lastNew=id;}
+  if(k==='perm'){const i=+$('#pM').value;st.permits[i]=cv('pst');t=`${PERMITS[i]} ${cv('pst')==='ok'?'완료':'진행 중'}`;const id=++S.seq;S.posts.push({id,site:sid,by:me,d:today(),t,pub});lastNew=id;}
+  save();closeM();render();toast(pub?`등록했어요 · ${U(st.owner).name} 건축주 페이지에 바로 보입니다`:'등록했어요 · 내부에만 보입니다');
+}
+function openTask(){
+  const ids=Object.keys(S.sites);
+  modal.innerHTML=`<h3>지시 내리기</h3>
+  <div class="f"><label>현장</label>${chips('site',ids.map(s=>({v:s,l:s+'현장 · '+S.sites[s].name})),ids[0])}</div>
+  <div class="f"><label>담당</label><div id="toBox"></div></div>
+  <div class="f"><label>지시 내용</label><textarea id="tT" placeholder="예) 내일 타설 전 거푸집 사진 올려주세요"></textarea></div>
+  <div class="f"><label>기한</label><input type="date" id="tD"></div>
+  <div class="f"><label>우선순위</label>${chips('pri',[{v:'urgent',l:'긴급'},{v:'normal',l:'보통'}],'normal')}</div>
+  <div class="mact"><button class="btn ghost" onclick="closeM()">취소</button><button class="btn dark" onclick="submitTask()">지시 보내기</button></div>`;
+  const d=new Date(Date.now()+2*864e5);$('#tD').value=d.toISOString().slice(0,10);
+  const toBox=()=>{const sid=cv('site');const mgrs=USERS.filter(u=>u.role==='mgr'&&u.sites.includes(sid));$('#toBox').innerHTML=chips('to',mgrs.map(m=>({v:m.id,l:m.name})),mgrs[0].id);bindChips(n=>{if(n==='site')toBox()})};
+  toBox();mbg.classList.add('on');
+}
+function submitTask(){const t=$('#tT').value.trim();if(!t){toast('지시 내용을 적어주세요');return}
+  const id=++S.seq;S.tasks.push({id,site:cv('site'),to:cv('to'),from:me,d:today(),due:$('#tD').value,t,pri:cv('pri'),st:'open'});save();closeM();render();toast(`${U(cv('to')||'lee').name}님에게 지시를 보냈어요`)}
+function openDone(id){const t=S.tasks.find(x=>x.id===id);
+  modal.innerHTML=`<h3>완료 보고</h3><div class="hsub" style="margin-bottom:12px">[${t.site}현장] ${esc(t.t)}</div>
+  <div class="f"><label>완료 메모</label><textarea id="dN" placeholder="예) 거푸집 설치 완료, 사진 첨부"></textarea></div>
+  <div class="f"><label>사진 (촬영 또는 앨범, 선택)</label><input type="file" id="dI" accept="image/*"></div>
+  <div class="f"><label>건축주 페이지에도 올리기</label>${chips('pub',[{v:'1',l:'올리기'},{v:'0',l:'대표에게만'}],'0')}</div>
+  <div class="mact"><button class="btn ghost" onclick="closeM()">취소</button><button class="btn" onclick="submitDone(${id})">완료 보고</button></div>`;bindChips();mbg.classList.add('on')}
+async function submitDone(id){const t=S.tasks.find(x=>x.id===id);t.st='done';t.doneNote=$('#dN').value.trim()||'완료';
+  const f=$('#dI').files[0];const img=f?await resizeImg(f):null;
+  if(cv('pub')==='1'||img){const pid=++S.seq;S.posts.push({id:pid,site:t.site,by:me,d:today(),t:t.doneNote,pub:cv('pub')==='1',img});lastNew=pid}
+  save();closeM();render();toast('완료 보고했어요 · 대표 화면에 바로 보입니다')}
+function openReq(){modal.innerHTML=`<h3>요청 남기기</h3><div class="f"><label>내용</label><textarea id="rT" placeholder="예) 현관 조명 위치를 조금 옮길 수 있을까요?"></textarea></div><div class="mact"><button class="btn ghost" onclick="closeM()">취소</button><button class="btn" onclick="submitReq()">보내기</button></div>`;mbg.classList.add('on')}
+function submitReq(){const t=$('#rT').value.trim();if(!t)return;const u=U(me);S.reqs.push({id:++S.seq,site:u.site,by:me,d:today(),t,st:'open'});save();closeM();render();toast('담당자에게 전달했어요')}
+function openReply(id){const r=S.reqs.find(x=>x.id===id);modal.innerHTML=`<h3>건축주 요청 답변</h3><div class="hsub" style="margin-bottom:12px">[${r.site}현장] ${esc(r.t)}</div><div class="f"><label>답변</label><textarea id="aT"></textarea></div><div class="mact"><button class="btn ghost" onclick="closeM()">취소</button><button class="btn" onclick="submitReply(${id})">답변 보내기</button></div>`;mbg.classList.add('on')}
+function submitReply(id){const r=S.reqs.find(x=>x.id===id);r.reply=$('#aT').value.trim()||'확인했습니다.';r.st='done';save();closeM();render();toast('답변을 건축주 페이지에 올렸어요')}
+render();
+</script>
+</body>
+</html>
